@@ -13,8 +13,9 @@ with an added rating system feature where users can perform basic CRUD operation
 * IN PROGRESS *
 
 # Usage:
+<img width="1440" alt="Usage" src="https://github.com/Pedro101s/Rating-System/assets/82178889/6f8100d8-6651-4a8c-937d-90334646f8d1">
 
- * IN PROGRESS *
+
 
 # Technologies Used:
 - Spring Boot
