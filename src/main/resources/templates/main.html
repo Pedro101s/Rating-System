@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>All Posts</title>
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="css/style.css">
+   <!-- sweetalert cdn link  -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <section class="flex">
+            <a th:href="@{/main}" class="logo"> <span class="review">Review</span><span class="realm">Realm</span></a>
+
+            <nav class="navbar">
+                <a th:href="@{/main}" class="far fa-eye"></a>
+                <a th:href="@{/login}" class="fas fa-arrow-right-to-bracket"></a>
+                <a th:href="@{/register}" class="far fa-registered"></a>
+
+                <div th:if="${username != null}" id="user-btn" class="far fa-user"></div>
+            </nav>
+
+            <div class="profile">
+                <a th:if="${username != null}">
+                    <img th:src="'data:image/png;base64,' + ${image}" alt="" class="image" th:if="${image != null}" />
+                    <p th:text="${username}"></p>
+                    <a th:href="@{/update_profile}" class="btn">Update Profile</a>
+                    <a th:href="@{/logout}" class="delete-btn"
+                    th:onclick="return confirm('Logout from this website?');">Logout</a>
+                </a>
+
+                <a th:if="${username == null}" class="flex-btn">
+                    <p>Please login or register!</p>
+                    <a th:href="@{/login}" class="inline-option-btn">Login</a>
+                    <a th:href="@{/register}" class="inline-option-btn">Register</a>
+                </a>
+                </div>
+        </section>
+    </header>
+
+    <section class="all-posts">
+
+        <div class="heading"><h1>all posts</h1></div>
+    
+        <div class="box-container">
+            <!-- Iterate over posts and display them -->
+            <div class="box" th:each="post : ${posts}">
+                <img th:src="'data:image/png;base64,' + ${post.imageBase64}" alt="" class="image" />
+                <h3 class="title" th:text="${post.title}"></h3>
+                <!-- Add other fields as needed -->
+                <!-- Add logic to count reviews for each post -->
+                <p class="total-reviews"><i class="fas fa-star"></i> <span th:text="'Total Reviews: ' + ${#vars['reviewCount_' + post.id]}"><!-- total reviews count --></span></p>
+                <a th:href="'/view-post/' + ${post.id}" class="inline-btn">view post</a>
+            </div>
+        </div>
+    
+    </section>
+
+
+
+
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
+
+</body>
+</html>

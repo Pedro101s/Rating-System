@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>View Post</title>
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/css/style.css">
+   <!-- sweetalert cdn link  -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+</head>
+<body>
+
+   <!-- header section starts -->
+   <header class="header">
+      <section class="flex">
+         <a th:href="@{/main}" class="logo"> <span class="review">Review</span><span class="realm">Realm</span></a>
+
+         <nav class="navbar">
+            <a th:href="@{/main}" class="far fa-eye"></a>
+            <a th:href="@{/login}" class="fas fa-arrow-right-to-bracket"></a>
+            <a th:href="@{/register}" class="far fa-registered"></a>
+
+            <div th:if="${username != null}" id="user-btn" class="far fa-user"></div>
+         </nav>
+
+         <div class="profile">
+            <a th:if="${username != null}">
+               <img th:src="'data:image/png;base64,' + ${image}" alt="" class="image" th:if="${image != null}" />
+               <p th:text="${username}"></p>
+               <a th:href="@{/update_profile}" class="btn">Update Profile</a>
+               <a th:href="@{/logout}" class="delete-btn"
+                  th:onclick="return confirm('Logout from this website?');">Logout</a>
+             </a>
+
+            <a th:if="${username == null}" class="flex-btn">
+               <p>Please login or register!</p>
+               <a th:href="@{/login}" class="inline-option-btn">Login</a>
+               <a th:href="@{/register}" class="inline-option-btn">Register</a>
+              </a>
+          </div>
+      </section>
+   </header>
+   <!-- header section ends -->
+
+   <!-- view posts section starts  -->
+   <section class="view-post">
+
+      <div class="heading"><h1>post details</h1> <a th:href="@{/main}" class="inline-option-btn" style="margin-top: 0;">all posts</a></div>
+        <div class="row">
+            <div class="col">
+               <img th:src="'data:image/png;base64,' + ${postImage}" alt="" class="image">
+               <h3 class="title" th:text="${postTitle}"></h3>
+            </div>
+            <div class="col">
+               <div class="flex">
+                  <div class="total-reviews">
+                     <!-- Display your average and total reviews here -->
+                     <h3 th:utext="${average} + ' &lt;i class=\'fas fa-star\'>&lt;/i>'"></h3>
+                     <p th:text="'Total ' + ${totalReviews} + ' reviews'"></p>
+                  </div>
+                  <div class="total-ratings">
+                     <p>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span th:text = "${rating5Count}"></span>
+                     </p>
+                     <p>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span th:text = "${rating4Count}"></span>
+                     </p>
+                     <p>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span th:text = "${rating3Count}"></span>
+                     </p>
+                     <p>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span th:text = "${rating2Count}"></span>
+                     </p>
+                     <p>
+                        <i class="fas fa-star"></i>
+                        <span th:text = "${rating1Count}"></span>
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- view posts section ends  -->
+
+   <!-- reviews section starts  -->
+   <section class="reviews-container">
+    <div class="heading"><h1>user's reviews</h1> <a th:href="'/add-review/' + ${postId}" class="inline-btn" style="margin-top: 0;">add review</a></div>
+    <div class="box-container">
+      <div th:each="review : ${reviews}" class="box" th:classappend="${review.userId == userId} ? 'order-1' : ''">
+         <div class="user">
+            <img th:src="'data:image/png;base64,' + ${review.getUser.imageBase64}" th:alt="${review.user.name}" th:if="${review.user.image != ''}" />
+            <h3 th:text="${review.user.name}" th:unless="${review.user.image != ''}"></h3>
+            <div>
+               <p th:text="${review.user.name}"></p>
+               <span th:text="${review.date}"></span>
+            </div>
+         </div>
+         <div class="ratings" th:switch="${review.rating}">
+            <p th:case="1" style="background:var(--red);"><i class="fas fa-star"></i> <span th:text="${review.rating}"></span></p>
+            <p th:case="2" style="background:var(--orange);"><i class="fas fa-star"></i> <span th:text="${review.rating}"></span></p>
+            <p th:case="3" style="background:var(--orange);"><i class="fas fa-star"></i> <span th:text="${review.rating}"></span></p>
+            <p th:case="4" style="background:var(--main-color);"><i class="fas fa-star"></i> <span th:text="${review.rating}"></span></p>
+            <p th:case="5" style="background:var(--main-color);"><i class="fas fa-star"></i> <span th:text="${review.rating}"></span></p>
+         </div>
+         <h3 class="title" th:text="${review.title}"></h3>
+         <p class="description" th:text="${review.description}" th:if="${review.description != ''}"></p>
+         <form action="/deleteReview" method="post" class="flex-btn" th:if="${review.userId == userId}">
+            <input type="hidden" name="delete_id" th:value="${review.id}">
+            <input type="hidden" name="viewPostId" th:value ="${postId}">
+            <a th:href="'/update-review/' + ${postId} + '/' + ${userId}" class="inline-option-btn">edit review</a>
+            <input type="submit" value="delete review" class="inline-delete-btn" name="delete_review" th:onclick="'return confirm(\'delete this review?\');'">
+         </form>
+      </div>
+   
+      <p class="empty" th:if="${reviews.isEmpty()}">no reviews added yet!</p>
+   
+      </div>
+    </div>
+
+   </section>
+   <!-- reviews section ends  -->
+
+   <!-- custom js file link  -->
+   <script src="/js/script.js"></script>
+
+</body>
+</html>

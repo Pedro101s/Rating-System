@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Update Review</title>
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/css/style.css">
+   <!-- sweetalert cdn link  -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+</head>
+<body>
+
+    <!-- header section starts -->
+<header class="header">
+    <section class="flex">
+        <a th:href="@{/main}" class="logo"> <span class="review">Review</span><span class="realm">Realm</span></a>
+
+        <nav class="navbar">
+            <a th:href="@{/main}" class="far fa-eye"></a>
+            <a th:href="@{/login}" class="fas fa-arrow-right-to-bracket"></a>
+            <a th:href="@{/register}" class="far fa-registered"></a>
+
+            <div th:if="${username != null}" id="user-btn" class="far fa-user"></div>
+        </nav>
+
+        <div class="profile">
+            <a th:if="${username != null}">
+                <img th:src="'data:image/png;base64,' + ${image}" alt="" class="image" th:if="${image != null}" />
+                <p th:text="${username}"></p>
+                <a th:href="@{/update_profile}" class="btn">Update Profile</a>
+                <a th:href="@{/logout}" class="delete-btn"
+                   th:onclick="return confirm('Logout from this website?');">Logout</a>
+            </a>
+
+            <a th:if="${username == null}" class="flex-btn">
+                <p>Please login or register!</p>
+                <a th:href="@{/login}" class="inline-option-btn">Login</a>
+                <a th:href="@{/register}" class="inline-option-btn">Register</a>
+            </a>
+        </div>
+    </section>
+</header>
+    
+    
+
+<section class="account-form">
+    <form th:action="@{'/update-review/' + ${postId} + '/' + ${userId}}" method="post">
+        <div th:if="${successMsg}">
+            <script>swal("Review Updated!", "See Your Review!", "success");</script>
+            <h3 th:text="${successMsg}" style="color: green;"></h3>
+        </div>
+        <div th:unless="${successMsg}">
+            <h3>edit your review</h3>
+        </div>
+        <p class="placeholder">review title <span>*</span></p>
+        <input type="text" name="title" required maxlength="50" placeholder="enter review title" class="box" th:value="${title}">
+        <p class="placeholder">review description</p>
+        <textarea name="description" class="box" placeholder="enter review description" maxlength="1000" cols="30" rows="10" th:text="${description}"></textarea>
+        <p class="placeholder">review rating <span>*</span></p>
+        <select name="rating" class="box" required>
+            <option th:value="${rating}" th:text="${rating}"></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <input type="hidden" name="get_id" th:value="${postId}">
+        <input type="submit" value="update review" name="submit" class="btn">
+        <a th:href="'/view-post/' + ${postId}" class="option-btn">go back</a>
+    </form>
+</section>
+
+
+    <!-- custom js file link  -->
+    <script src="/js/script.js"></script>
+
+</body>
+</html>

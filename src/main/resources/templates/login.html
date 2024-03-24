@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- sweetalert cdn link  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+</head>
+<body>
+    <header class="header">
+        <section class="flex">
+            <a th:href="@{/main}" class="logo"> <span class="review">Review</span><span class="realm">Realm</span></a>
+
+            <nav class="navbar">
+                <a th:href="@{/main}" class="far fa-eye"></a>
+                <a th:href="@{/login}" class="fas fa-arrow-right-to-bracket"></a>
+                <a th:href="@{/register}" class="far fa-registered"></a>
+
+                <div th:if="${username != null}" id="user-btn" class="far fa-user"></div>
+            </nav>
+
+            <div class="profile">
+                <a th:if="${username != null}">
+                    <img th:src="'data:image/png;base64,' + ${image}" alt="" class="image" th:if="${image != null}" />
+                    <p th:text="${username}"></p>
+                    <a th:href="@{/update_profile}" class="btn">Update Profile</a>
+                    <a th:href="@{/logout}" class="delete-btn"
+                        th:onclick="return confirm('Logout from this website?');">Logout</a>
+                </a>
+
+                <a th:if="${username == null}" class="flex-btn">
+                    <p>Please login or register!</p>
+                    <a th:href="@{/login}" class="inline-option-btn">Login</a>
+                    <a th:href="@{/register}" class="inline-option-btn">Register</a>
+                </a>
+            </div>
+        </section>
+    </header>
+    <section class="account-form">
+        <form th:action="@{/login}" method="post" enctype="multipart/form-data">
+            <div th:if="${message}">
+                <script>swal("Login Failed!", "Make Sure Email/Password Is Typed Correctly!", "warning");</script>
+                <h3 th:text="${message}" style="color: red;"></h3>
+            </div>
+            <div th:unless="${message}">
+            <h3>Welcome back!</h3>
+            </div>
+            <p class="placeholder">your email <span>*</span></p>
+            <input type="email" name="email" required maxlength="50" placeholder="Enter your email" class="box">
+            <p class="placeholder">your password <span>*</span></p>
+            <input type="password" name="password" required maxlength="50" placeholder="Enter your password" class="box">
+            <p class="link">Don't have an account? <a href="/register">Register now</a></p>
+            <input type="submit" value="Login now" name="submit" class="btn">
+        </form>
+    </section>
+    <p th:text="${warningMsg}" style="color: red;"></p>
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
+</body>
+</html>

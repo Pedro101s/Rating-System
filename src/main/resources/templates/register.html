@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- sweetalert cdn link  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+    
+</head>
+<body>
+    <header class="header">
+        <section class="flex">
+            <a th:href="@{/main}" class="logo"> <span class="review">Review</span><span class="realm">Realm</span></a>
+
+            <nav class="navbar">
+                <a th:href="@{/main}" class="far fa-eye"></a>
+                <a th:href="@{/login}" class="fas fa-arrow-right-to-bracket"></a>
+                <a th:href="@{/register}" class="far fa-registered"></a>
+
+                <div th:if="${username != null}" id="user-btn" class="far fa-user"></div>
+            </nav>
+
+            <div class="profile">
+                <a th:if="${username != null}">
+                    <img th:src="'data:image/png;base64,' + ${image}" alt="" class="image" th:if="${image != null}" />
+                    <p th:text="${username}"></p>
+                    <a th:href="@{/update_profile}" class="btn">Update Profile</a>
+                    <a th:href="@{/logout}" class="delete-btn"
+                        th:onclick="return confirm('Logout from this website?');">Logout</a>
+                </a>
+
+                <a th:if="${username == null}" class="flex-btn">
+                    <p>Please login or register!</p>
+                    <a th:href="@{/login}" class="inline-option-btn">Login</a>
+                    <a th:href="@{/register}" class="inline-option-btn">Register</a>
+                </a>
+            </div>
+        </section>
+    </header>
+
+    <section class="account-form">
+        <form th:action="@{/register}" method="post" enctype="multipart/form-data">
+            <div th:if="${successMsg}">
+                <script>swal("Registered successfully!", "You Can Now Log In!", "success");</script>
+                <h3 th:text="${successMsg}" style="color: green;"></h3>
+            </div>
+            <div th:if="${warningMsg}">
+                <!-- Warning message script -->
+                <script>swal("Warning!","Email/Password Error!", "warning");</script>
+                <!-- Display warning message -->
+                <h3 th:text="${warningMsg}" style="color: red;"></h3>
+            </div>
+            
+            <div th:unless="${successMsg} or ${warningMsg}">
+                <!-- Default h3 for creating an account -->
+                <h3>make your account!</h3>
+            </div>
+            <p class="placeholder">your name <span>*</span></p>
+            <input type="text" id="name" name="name" required maxlength= "50" placeholder="enter your name" class="box">
+        
+            <p class="placeholder">your email <span>*</span></p>
+            <input type="email" id="email" name="email" required maxlength="50" placeholder="enter your email" class="box">
+        
+            <p class="placeholder">your password <span>*</span></p>
+            <input type="password" id="password" name="password" required maxlength="50" placeholder="enter your password" class="box">
+        
+            <p class="placeholder">confirm password <span>*</span></p>
+            <input type="password" id="confirmPassword" name="confirmPassword" required maxlength="50" placeholder="confirm your password" class="box">
+
+            <p class="placeholder">profile pic</p>
+            <input type="file" id="image" name="image" class="box" accept="image/*"><br><br>
+
+            <p class="link">already have an account? <a href="/login">login now</a></p>
+            <input type="submit" value="register now" name="submit" class="btn">
+        </form>
+    </section>
+
+
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
+</body>
+</html>
