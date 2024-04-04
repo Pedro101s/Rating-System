@@ -37,6 +37,12 @@ public class PostController
         this.loginProcessor = loginProcessor;
     }
 
+    
+    @GetMapping("/")
+    public String redirectToMain() 
+    {
+        return "redirect:/main";
+    }
 
     @GetMapping("/main")
     public String post(@RequestParam(required = false) String logout, Model model) 
