@@ -47,12 +47,8 @@ public class PostService
         return postRepository.hasPosts();
     }
 
-    public void populatePredefinedPosts(List<Post> posts) {
-        // Add your predefined posts here
-        // Make sure to adjust the paths based on your static/images folder structure
-        // Also, ensure that duplicate images are not added twice
-
-        // Example:
+    public void populatePredefinedPosts(List<Post> posts) 
+    {
         Set<String> usedImages = new HashSet<>();
         addPredefinedPost(posts, "Remember The Titans", "Remember_The_Titans.png", usedImages);
         addPredefinedPost(posts, "Prince Of Egypt", "The-Prince-of-Egypt.jpg", usedImages);
@@ -62,11 +58,12 @@ public class PostService
         addPredefinedPost(posts, "Captain America 2", "Captain_America.jpg", usedImages);
     }
 
-    private void addPredefinedPost(List<Post> posts, String title, String imageName, Set<String> usedImages) {
-        // Check if the image name is already used, if not, add the post
+    private void addPredefinedPost(List<Post> posts, String title, String imageName, Set<String> usedImages) 
+    {
+        
         if (!hasPosts()) 
         {
-            String imagePath = "/static/images/" + imageName; // Adjust the path as per your folder structure
+            String imagePath = "/static/images/" + imageName; 
             byte[] imageData = loadImage(imagePath);
             if (imageData != null) 
             {
@@ -86,13 +83,17 @@ public class PostService
         }
     }
 
-    private byte[] loadImage(String imagePath) {
-        try {
+    private byte[] loadImage(String imagePath) 
+    {
+        try 
+        {
             Resource resource = resourceLoader.getResource("classpath:" + imagePath);
             InputStream inputStream = resource.getInputStream();
             return StreamUtils.copyToByteArray(inputStream);
-        } catch (IOException e) {
-            // Handle error
+        } 
+        catch (IOException e) 
+        {
+            
             return null;
         }
     }

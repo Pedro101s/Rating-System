@@ -11,7 +11,7 @@ public class Review
     private String description;
     private int rating;
     private String date;
-    private User user; // Reference to the user who posted the review
+    private User user; 
 
     public long getId() 
     {

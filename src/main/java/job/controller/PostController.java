@@ -1,17 +1,10 @@
 package job.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -108,7 +101,6 @@ public class PostController
     @GetMapping("/view-post/{postId}")
     public String viewPost(@RequestParam(required = false) String logout, @PathVariable Long postId, Model model) 
     {
-        // Assuming you have a ReviewService to handle review-related operations
         List<Review> reviews = reviewService.getReviewsByPostId(postId);
         
 
@@ -126,7 +118,7 @@ public class PostController
         int rating5Count = 0;
         for (Review review : reviews) 
         {
-            User user = loginProcessor.findUserById(review.getUserId()); // Assuming you have a UserService
+            User user = loginProcessor.findUserById(review.getUserId());
             review.setUser(user);
             int rating = review.getRating();
             switch (rating) 
@@ -158,7 +150,6 @@ public class PostController
         model.addAttribute("rating5Count", rating5Count);
 
 
-        // Assuming you have a PostService to handle database operations
         Post post = postService.getPostById(postId);
 
         String postImage = post.getImageBase64();

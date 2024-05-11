@@ -2,7 +2,6 @@ package job.controller;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,34 +26,7 @@ public class UserController
         this.loginProcessor = loginProcessor;
     } 
 
-    /* 
-    @GetMapping("/main")
-    public String home(
-      @RequestParam(required = false) String logout,
-      Model model) 
-    {
-        if (logout != null) 
-        {
-            loggedUserManagementService.setUsername(null);
-            loggedUserManagementService.setImage(null);
-        }
-        
-        String username = loggedUserManagementService.getUsername();
-
-        if (username == null) 
-        {
-            return "main.html";
-        }
-        else
-        {
-            String image = loggedUserManagementService.getImageBase64();
-            model.addAttribute("username" , username);
-            model.addAttribute("image", image);
-        }
-        return "main.html";
-    }
-    */
-
+    
     @PostMapping("/register")
     public String storeUser(@RequestParam(required = false) String logout, @RequestParam("name") String name, 
         @RequestParam("email") String email, @RequestParam("password") String password, 
@@ -64,14 +36,14 @@ public class UserController
         try 
         {
             if (logout != null) {
-                loginProcessor.setUsername(null); //loggedUserManagementService
-                loginProcessor.setImage(null); //loggedUserManagementService
+                loginProcessor.setUsername(null); 
+                loginProcessor.setImage(null); 
             }
     
-            String username = loginProcessor.getUsername(); //loggedUserManagementService
+            String username = loginProcessor.getUsername(); 
     
             if (username != null) {
-                String userImage = loginProcessor.getImageBase64(); //loggedUserManagementService
+                String userImage = loginProcessor.getImageBase64(); 
                 model.addAttribute("username", username);
                 model.addAttribute("image", userImage);
             }
@@ -111,11 +83,11 @@ public class UserController
     {
         if (logout != null) 
         {
-            loginProcessor.setUsername(null); //loggedUserManagementService
-            loginProcessor.setImage(null); //loggedUserManagementService
+            loginProcessor.setUsername(null);
+            loginProcessor.setImage(null);
         }
         
-        String username = loginProcessor.getUsername(); //loggedUserManagementService
+        String username = loginProcessor.getUsername();
 
         if (username == null) 
         {
@@ -123,7 +95,7 @@ public class UserController
         }
         else
         {
-            String image = loginProcessor.getImageBase64(); //loggedUserManagementService
+            String image = loginProcessor.getImageBase64();
             model.addAttribute("username" , username);
             model.addAttribute("image", image);
         }
@@ -177,35 +149,22 @@ public class UserController
         return "login.html";
     }
 
-    /*@GetMapping("/logout")
-    public String logout(@RequestParam(required = false) String logout,
-    Model model)   
-    {
-        List<Post> posts = postService.findAllPosts();
-        model.addAttribute("posts", posts);
-        loginProcessor.setUsername(null);
-        loginProcessor.setImage(null);
-        return "main.html";
-    }
-    */
-
-
     @GetMapping("/update_profile")
     public String profile(@RequestParam(required = false) String logout, Model model) 
     {
         if (logout != null) 
         {
-            loginProcessor.setUsername(null); //loggedUserManagementService
-            loginProcessor.setImage(null); //loggedUserManagementService
+            loginProcessor.setUsername(null);
+            loginProcessor.setImage(null); 
         }
         
-        String username = loginProcessor.getUsername(); //loggedUserManagementService
+        String username = loginProcessor.getUsername();
 
         if (username == null) 
         {
             return "redirect:/login";
         }
-        String image = loginProcessor.getImageBase64(); //loggedUserManagementService
+        String image = loginProcessor.getImageBase64();
 
         model.addAttribute("username" , username);
         model.addAttribute("image", image);
@@ -222,8 +181,8 @@ public class UserController
             @RequestParam("image") MultipartFile image, Model model) 
     {
 
-        String username = loginProcessor.getUsername(); //loggedUserManagementService
-        String currentImage = loginProcessor.getImageBase64(); //loggedUserManagementService
+        String username = loginProcessor.getUsername();
+        String currentImage = loginProcessor.getImageBase64();
 
         if (username == null) 
         {   
@@ -233,13 +192,13 @@ public class UserController
         {
             if (logout != null) 
             {
-                loginProcessor.setUsername(null); //loggedUserManagementService
-                loginProcessor.setImage(null); //loggedUserManagementService
+                loginProcessor.setUsername(null);
+                loginProcessor.setImage(null);
                 return "redirect:/login"; // Redirect to login page after logout
             }
 
-            // Assuming you have a UserService instance available
-            User user = userService.findUserById(loginProcessor.getId()); //loggedUserManagementService
+            
+            User user = userService.findUserById(loginProcessor.getId());
 
             if (user == null) 
             {
@@ -250,7 +209,7 @@ public class UserController
             if (name != null && !name.isEmpty()) 
             {
                 userService.updateUserName(user.getId(), name);
-                loginProcessor.setUsername(name); //loggedUserManagementService
+                loginProcessor.setUsername(name);
                 user.setName(name);
             }
 
@@ -293,7 +252,6 @@ public class UserController
             // Delete image
         if (deleteImage) 
         {
-            // Set image to null
             try {
                 if (Arrays.equals(user.getImage(), userService.getDefaultImageBytes())) {
                     model.addAttribute("warningMsg", "Image already deleted!");
@@ -309,15 +267,14 @@ public class UserController
                         byte[] defaultImageBytes = userService.getDefaultImageBytes();
                         userService.updateUserImageNoResize(user.getId(), defaultImageBytes);
                         user.setImage(defaultImageBytes);
-                        loginProcessor.setImage(defaultImageBytes); //loggedUserManagementService
-                        currentImage = loginProcessor.getImageBase64(); //loggedUserManagementService
+                        loginProcessor.setImage(defaultImageBytes); 
+                        currentImage = loginProcessor.getImageBase64();
                         model.addAttribute("username", username);
                         model.addAttribute("image", currentImage);
                         return "update_profile.html";
                     } 
                     catch (IOException e) 
                     {
-                        // Handle the exception as needed
                         e.printStackTrace();
                     }
                 }
@@ -332,18 +289,17 @@ public class UserController
                 try 
                 {
                     userService.updateUserImage(user.getId(), image.getBytes());
-                    user.setImage(userService.findImageById(loginProcessor.getId())); //loggedUserManagementService
-                    loginProcessor.setImage(user.getImage()); //loggedUserManagementService
+                    user.setImage(userService.findImageById(loginProcessor.getId()));
+                    loginProcessor.setImage(user.getImage());
                 } 
                 catch (IOException e) 
                 {
-                    // Handle the exception as needed
                     e.printStackTrace();
                 }
             }
-            username = loginProcessor.getUsername(); //loggedUserManagementService
+            username = loginProcessor.getUsername();
 
-            currentImage = loginProcessor.getImageBase64(); //loggedUserManagementService
+            currentImage = loginProcessor.getImageBase64();
 
             model.addAttribute("username", username);
             model.addAttribute("image", currentImage);
